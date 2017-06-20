@@ -1,0 +1,140 @@
+using System;
+using System.Collections.Generic;
+
+namespace Battleship
+{
+    public class Game
+    {
+
+        Grid Grid = new Grid();
+        Boats Boats = new Boats();
+        InputOutput InputOutput = new InputOutput();
+        
+        // Had to create a method to return the boats - otherwise c# is bugging me again
+        public List<int> getBoats()
+        {
+            List<int> ships = Boats.CreateBoats();
+            return ships;
+        }
+       
+
+
+        /*
+         * Attempt to create a STATIC list of boat coordinates that would not be regenerated each time I call the function PlayGame().
+        */
+        public /*List<int>*/ void GetCoordinatesIndex()
+        {
+            // Variable for a list of coordinates with only i indexes
+            //List<int> coordinatesIndexI = new List<int>();
+
+            /*
+             * Loops through all the boats and their lengths to check if they correspond to the player's inputs.
+             * If there is a hit, a "hitCounter" will be incremented. A boolean "hit" will also be set to true.
+             * If the player misses the boats, the "hitCounter" will not be incremented. The "hit" boolean stays set on false.
+             */
+            for (var i = 0; i < getBoats().Count; i++)
+            {
+               
+                Console.WriteLine("ships[i]: " + getBoats()[i]);
+
+
+                // This could be simplified to just use "i" in the conditions below
+                int index_i = i;
+                Console.WriteLine("this is the index of i =" + index_i);
+
+                // Only check the odd indexes of the coordinates array for COLUMN player input
+                bool bool_column = (i + 1) % 2 != 0;
+
+                if (bool_column)
+                {
+                    //coordinatesIndexI.Add(getBoats()[i]);
+                    for (int j = 0; j < getBoats().Count; j++)
+                    {
+                        // Only check the even indexes of the coordinates array for ROW player input
+                        // WARNING! Had to add 1 to the index of i so that it corresponds to the index of j
+                        bool bool_row = (j + 1) % 2 == 0;
+
+                        Console.WriteLine("this is the index of j =" + j);
+
+                        if (bool_row)
+                        {
+                           //coordinatesIndexJ.Add(getBoats()[j]);
+                            Console.WriteLine("ships[j]: " + getBoats()[j]);
+                        }
+                }
+                    
+                    }
+                    //return new List<int>(coordinatesIndexJ);
+            }
+         
+            //return new List<int>(coordinatesIndexI);
+        }
+
+        
+        public void CompareCoordinatesWithPlayerInput()
+        {            
+            /*
+            for (int i = 0; i < GetCoordinatesIndexI().Count; i++)
+            {
+                Console.WriteLine("GetCoordinatesIndexI, {0}", GetCoordinatesIndexI()[i]);
+                Console.WriteLine("GetCoordinatesIndexI, {0}", GetCoordinatesIndexJ()[i]);
+
+            }
+             */
+
+
+            
+            /*
+            //Player Input for Column & Row Number:
+            Console.Write("So gimme a column number: ");
+            var input_column = InputOutput.ColumnInput();
+            Console.Write("Now gimme a row number: ");
+            int input_row = InputOutput.RowInput();
+
+            int hitCounter = 0;
+            bool hit = false;
+
+
+            if (hit == false)
+            {
+                Console.WriteLine("Plouf! Too bad, there was nothing there, try again!\n");
+            }
+            else
+            {
+                Console.WriteLine("That's a hit! Well done! Keep playing!\n");
+                hitCounter++;
+                hit = false;
+            }
+            Console.WriteLine("hitCounter = {0}", hitCounter.ToString());
+
+            return hitCounter;
+             * 
+             */
+        }
+
+
+
+        /*
+        * Attempt to create a queue adding and saving all the hit cells // this is returning an empty queue!
+        */
+        public Queue<int> AddToHitQueue(int coordinate_X, int coordinate_Y)
+        {
+            Queue<int> HitQueue = new Queue<int>();
+
+            //Console.WriteLine("{0}, {1}", coordinate_X, coordinate_Y);
+            int[] hitCoordinates = new int[HitQueue.Count];
+
+            HitQueue.CopyTo(hitCoordinates, 0);
+
+            for (int i = 0; i < hitCoordinates.Length; i++)
+            {
+                //Console.WriteLine("{0}", hitCoordinates[i]);
+                HitQueue.Enqueue(coordinate_X);
+                HitQueue.Enqueue(coordinate_Y);
+
+            }
+            Console.WriteLine("{0}", string.Join(",", HitQueue));
+            return HitQueue;
+        }
+    }
+}
